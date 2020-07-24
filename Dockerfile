@@ -5,7 +5,15 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 # Install apache, PHP, and supplimentary programs. curl and lynx-cur are for debugging the container.
-RUN apt-get -y install apache2 php5-mysql php5-gd php-pear php-apc php5-curl php5-ldap curl
+RUN apt-get -y install apache2
+
+RUN apt-get install -y php5 libapache2-mod-php5  \
+php5-fpm php5-cli php5-mysqlnd php5-pgsql php5-sqlite php5-redis \
+php5-apcu php5-intl php5-imagick php5-mcrypt php5-json php5-gd php5-curl && \
+php5enmod mcrypt && \
+rm -rf /var/lib/apt/lists/* && \
+cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+
 
 # Enable apache mods.
 RUN php5enmod openssl

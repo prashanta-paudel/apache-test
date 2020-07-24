@@ -7,10 +7,14 @@ RUN apt-get -y upgrade
 # Install apache, PHP, and supplimentary programs. curl and lynx-cur are for debugging the container.
 RUN apt-get -y install apache2
 
-RUN apt-get install -y php5 libapache2-mod-php5  \
-php5-fpm php5-cli php5-mysqlnd php5-pgsql php5-sqlite php5-redis \
-php5-apcu php5-intl php5-imagick php5-mcrypt php5-json php5-gd php5-curl && \
-php5enmod mcrypt
+RUN apt-get update && apt-get install -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        libpng-dev \
+    && docker-php-ext-install -j$(nproc) iconv mcrypt \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) gd
 
 
 # Enable apache mods.

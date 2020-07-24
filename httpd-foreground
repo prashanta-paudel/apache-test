@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/bash
+
+# Copied from official Docker httpd image
+# https://github.com/docker-library/httpd
 set -e
 
 # Apache gets grumpy about PID files pre-existing
-rm -f /usr/local/apache2/logs/httpd.pid
+rm -f /var/run/apache2/apache2.pid
 
-exec httpd -DFOREGROUND "$@"
+exec /usr/sbin/apache2ctl -D FOREGROUND

@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-MAINTAINER Dhanu Gupta <dhanu.gupta@gmail.com>
+MAINTAINER Prashanta Paudel <praspaudel@yahoo.com>
 
 RUN apt-get update
 RUN apt-get -y upgrade

@@ -7,19 +7,16 @@ RUN apt-get -y upgrade
 # Install apache, PHP, and supplimentary programs. curl and lynx-cur are for debugging the container.
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 curl
 
-RUN apt-get update && apt-get install -y \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng-dev \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
+        libpng-dev
 
 # Enable apache mods.
-RUN php5enmod openssl
-RUN a2enmod php5
-RUN a2enmod rewrite
+RUN DEBIAN_FRONTEND=noninteractive php5enmod openssl
+RUN DEBIAN_FRONTEND=noninteractive a2enmod php5
+RUN DEBIAN_FRONTEND=noninteractive a2enmod rewrite
 
 # Update the PHP.ini file, enable <? ?> tags and quieten logging.
 RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php5/apache2/php.ini
